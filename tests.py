@@ -1,3 +1,4 @@
+import pytest
 from main import BooksCollector
 
 # класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
@@ -29,11 +30,12 @@ class TestBooksCollector:
         result=collector.get_books_genre()
         assert len(result)==0
 
-    def test_add_new_book_without_genre_added(self):
+    @pytest.mark.parametrize('book_name', ['Книга без жанра','Ужасная книга стоматологов', 'Космический Джем'])
+    def test_add_new_book_without_genre_added(self, book_name):
         collector = BooksCollector()
-        collector.add_new_book('Книга без жанра')
+        collector.add_new_book(book_name)
         result=collector.get_books_genre()
-        expected={'Книга без жанра':''}
+        expected={book_name:''}
         assert result==expected
 
     def test_book_without_genre_not_added_for_children(self):
